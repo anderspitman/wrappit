@@ -15,6 +15,8 @@ if __name__ == '__main__':
         with open(config_filepath) as config_file:
             config = yaml.safe_load(config_file)
 
-        run_commands(config['before'])
+        if config['before'] is not None:
+            run_commands(config['before'])
         subprocess.check_call(command)
-        run_commands(config['after'])
+        if config['after'] is not None:
+            run_commands(config['after'])
