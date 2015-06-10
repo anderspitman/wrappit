@@ -1,0 +1,6 @@
+before:
+  - ls -l
+
+after:
+  - notify-send "command completed"
+  - ls

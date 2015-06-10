@@ -2,13 +2,19 @@
 
 import sys
 import subprocess
+import yaml
+
+def run_commands(commands):
+    for command in commands:
+        subprocess.check_call(command.split())
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        command = sys.argv[1:]
+    if len(sys.argv) > 2:
+        config_filepath = sys.argv[1]
+        command = sys.argv[2:]
+        with open(config_filepath) as config_file:
+            config = yaml.safe_load(config_file)
+
+        run_commands(config['before'])
         subprocess.check_call(command)
-        command_complete_string = "command completed: '"
-        command_complete_string += ' '.join(command)
-        command_complete_string += "'"
-        notify_command = ['notify-send', command_complete_string]
-        subprocess.check_call(notify_command)
+        run_commands(config['after'])
